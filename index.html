@@ -1,52 +1,79 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sunalein Store</title>
-  <style>
-    body{margin:0;font-family:system-ui;background:#0f0f14;color:#eaeaf0}
-    header,footer{padding:14px;border-bottom:1px solid #222}
-    footer{border-top:1px solid #222;border-bottom:none}
-    .wrap{max-width:1200px;margin:0 auto}
-    .grid{padding:14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
-    .card{background:#171722;border:1px solid #23233a;border-radius:12px;padding:10px}
-    img{width:100%;height:140px;object-fit:cover;border-radius:8px;background:#0b0b12}
-    .price{color:#ffcc66;font-weight:800}
-    .tag{color:#9aa0a6;font-size:12px}
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sunalein Store</title>
+<style>
+body{margin:0;font-family:system-ui;background:#0f0f14;color:#eaeaf0}
+header,footer{padding:14px}
+.wrap{max-width:1200px;margin:0 auto}
+header h2{margin:0}
+.buttons{margin:10px 0}
+.buttons button{margin:2px;padding:6px 12px;border:none;border-radius:8px;background:#7c9cff;color:#fff;cursor:pointer}
+.buttons button.active{background:#ffcc66;color:#000}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;padding:12px}
+.card{background:#171722;border:1px solid #23233a;border-radius:12px;padding:10px}
+img{width:100%;height:140px;object-fit:cover;border-radius:8px;background:#0b0b12}
+.price{color:#ffcc66;font-weight:800}
+.search{width:100%;padding:10px;border-radius:8px;border:1px solid #2a2a3a;background:#0b0b12;color:#eaeaf0;margin:10px 0}
+</style>
 </head>
 <body>
-<header><div class="wrap"><h2>Sunalein Store</h2></div></header>
-
-<main class="wrap">
-  <section class="grid" id="grid"></section>
-</main>
-
+<header class="wrap">
+<h2>Sunalein Store</h2>
+<input class="search" id="search" placeholder="Suchen…">
+<div class="buttons">
+<button data-cat="all" class="active">Alle</button>
+<button data-cat="wings">Wings</button>
+<button data-cat="pets">Pets</button>
+<button data-cat="hats">Hats</button>
+<button data-cat="accessories">Accessories</button>
+<button data-cat="effects">Effects</button>
+</div>
+</header>
+<main class="wrap"><section class="grid" id="grid"></section></main>
 <footer class="wrap">
-  👉 <a href="https://discord.gg/V9pPWjVSF8" target="_blank" style="color:#7c9cff;text-decoration:none;font-weight:700">
-    Join Discord
-  </a>
+👉 <a href="https://discord.gg/V9pPWjVSF8" target="_blank" style="color:#7c9cff;text-decoration:none;font-weight:700">Join Discord</a>
 </footer>
 
 <script>
-const grid = document.getElementById('grid');
+let items=[], filter='all';
+const grid=document.getElementById('grid');
+const search=document.getElementById('search');
+const buttons=document.querySelectorAll('.buttons button');
 
-fetch('./items.json')
-  .then(r=>r.json())
-  .then(items=>{
-    items.forEach(i=>{
-      const c=document.createElement('div');
-      c.className='card';
-      c.innerHTML=`
-        <img src="${i.img || 'https://via.placeholder.com/400x200?text=No+Image'}">
-        <b>${i.name}</b>
-        <div class="price">${i.price==null ? 'Preis auf Anfrage' : i.price.toFixed(2).replace('.',',')+' €'}</div>
-        <div class="tag">${i.cat}</div>
-      `;
-      grid.appendChild(c);
-    });
+fetch('./items.json').then(r=>r.json()).then(d=>{items=d; render();});
+
+buttons.forEach(b=>{
+  b.onclick=()=>{
+    buttons.forEach(btn=>btn.classList.remove('active'));
+    b.classList.add('active');
+    filter=b.dataset.cat;
+    render();
+  }
+});
+
+search.addEventListener('input',render);
+
+function render(){
+  grid.innerHTML='';
+  let list=items.filter(i=>
+    (filter==='all'||i.cat===filter) &&
+    i.name.toLowerCase().includes(search.value.toLowerCase())
+  );
+  list.forEach(i=>{
+    const c=document.createElement('div');
+    c.className='card';
+    c.innerHTML=`
+      <img src="${i.img||'https://via.placeholder.com/400x200?text=No+Image'}">
+      <b>${i.name}</b>
+      <div class="price">${i.price==null?'Preis auf Anfrage':i.price.toFixed(2).replace('.',',')+' €'}</div>
+      <div class="tag">${i.cat}</div>
+    `;
+    grid.appendChild(c);
   });
+}
 </script>
 </body>
 </html>
