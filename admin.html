@@ -1,66 +1,69 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin – Sunalein Store</title>
-  <style>
-    body{margin:0;font-family:system-ui;background:#0f0f14;color:#eaeaf0}
-    .box{max-width:600px;margin:40px auto;background:#171722;border:1px solid #23233a;border-radius:12px;padding:16px}
-    input,select,button{width:100%;padding:10px;margin:6px 0;border-radius:8px;border:1px solid #2a2a3a;background:#0b0b12;color:#eaeaf0}
-    button{background:#7c9cff;font-weight:800;cursor:pointer}
-    .hidden{display:none}
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin – Sunalein Store</title>
+<style>
+body{margin:0;font-family:system-ui;background:#0f0f14;color:#eaeaf0}
+.box{max-width:600px;margin:40px auto;background:#171722;border:1px solid #23233a;border-radius:12px;padding:16px}
+input,select,button{width:100%;padding:10px;margin:6px 0;border-radius:8px;border:1px solid #2a2a3a;background:#0b0b12;color:#eaeaf0}
+button{background:#7c9cff;font-weight:800;cursor:pointer}
+.hidden{display:none}
+.cat-btns button{margin:2px;background:#7c9cff;color:white;border:none;border-radius:6px;padding:6px;cursor:pointer}
+.cat-btns button.active{background:#ffcc66;color:#000}
+pre{background:#0b0b12;padding:10px;border-radius:8px;overflow-x:auto}
+</style>
 </head>
 <body>
 <div class="box" id="login">
-  <h3>Admin Login</h3>
-  <input id="user" placeholder="Name">
-  <input id="pass" placeholder="Passwort" type="password">
-  <button onclick="login()">Login</button>
-  <div id="err" style="color:#ff7a7a"></div>
+<h3>Admin Login</h3>
+<input id="user" placeholder="Name">
+<input id="pass" placeholder="Passwort" type="password">
+<button onclick="login()">Login</button>
+<div id="err" style="color:#ff7a7a"></div>
 </div>
 
 <div class="box hidden" id="admin">
-  <h3>Items hinzufügen (lokal)</h3>
-  <input id="name" placeholder="Name">
-  <input id="price" placeholder="Preis (leer = Anfrage)">
-  <select id="cat">
-    <option value="wings">Wings</option>
-    <option value="pets">Pets</option>
-    <option value="hats">Hats</option>
-    <option value="accessories">Accessories</option>
-    <option value="effects">Effects</option>
-  </select>
-  <input id="img" placeholder="Bild-URL">
-  <button onclick="add()">Zu items.json hinzufügen (anzeigen)</button>
-  <pre id="out"></pre>
+<h3>Item hinzufügen</h3>
+<input id="name" placeholder="Name">
+<input id="price" placeholder="Preis (leer = Anfrage)">
+<div class="cat-btns">
+<button data-cat="wings">Wings</button>
+<button data-cat="pets">Pets</button>
+<button data-cat="hats">Hats</button>
+<button data-cat="accessories">Accessories</button>
+<button data-cat="effects">Effects</button>
+</div>
+<input id="img" placeholder="Bild-URL">
+<button onclick="gen()">Objekt für items.json erzeugen</button>
+<pre id="out"></pre>
 </div>
 
 <script>
-const USER = 'sunalein';
-const PASS = 'Labyrinth876/12';
+const USER='sunalein',PASS='Labyrinth876/12';
+let selectedCat='wings';
 
 function login(){
-  const u = document.getElementById('user').value.toLowerCase();
-  const p = document.getElementById('pass').value;
-  if(u === USER && p === PASS){
+  const u=document.getElementById('user').value.toLowerCase();
+  const p=document.getElementById('pass').value;
+  if(u===USER && p===PASS){
     document.getElementById('login').classList.add('hidden');
     document.getElementById('admin').classList.remove('hidden');
-  } else {
-    document.getElementById('err').textContent = 'Falsche Daten';
-  }
+  } else document.getElementById('err').textContent='Falscher Name oder Passwort';
 }
 
-function add(){
-  const obj = {
-    name: name.value,
-    price: price.value ? parseFloat(price.value) : null,
-    cat: cat.value,
-    img: img.value
-  };
-  document.getElementById('out').textContent =
-    "Kopiere dieses Objekt in items.json:\n" + JSON.stringify(obj, null, 2);
+document.querySelectorAll('.cat-btns button').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('.cat-btns button').forEach(btn=>btn.classList.remove('active'));
+    b.classList.add('active');
+    selectedCat=b.dataset.cat;
+  }
+});
+
+function gen(){
+  const obj={name:name.value,price:price.value?parseFloat(price.value):null,cat:selectedCat,img:img.value};
+  document.getElementById('out').textContent=JSON.stringify(obj,null,2)+'\n\nKopiere in items.json';
 }
 </script>
 </body>
