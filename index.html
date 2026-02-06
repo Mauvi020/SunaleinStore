@@ -3,142 +3,112 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SunSlein Store – Cosmetics</title>
+  <title>Sunalein Store – Cosmetics</title>
   <style>
-    :root {
-      --bg: #0f0f14;
-      --card: #171722;
-      --text: #eaeaf0;
-      --muted: #9aa0a6;
-      --accent: #ffb703;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: linear-gradient(120deg, #0f0f14, #111827);
-      color: var(--text);
-    }
-    header {
-      padding: 24px 16px;
-      background: radial-gradient(1200px 400px at 10% -10%, #2a2a4a, transparent),
-                  radial-gradient(800px 300px at 90% 0%, #1f2933, transparent);
-      border-bottom: 1px solid #222;
-      position: sticky; top: 0; z-index: 5;
-      backdrop-filter: blur(6px);
-    }
-    .wrap { max-width: 1200px; margin: 0 auto; }
-    h1 { margin: 0 0 6px 0; letter-spacing: .3px; }
-    .sub { color: var(--muted); font-size: 14px; }
-    .controls {
-      display: grid; grid-template-columns: 1fr auto; gap: 12px; margin-top: 12px;
-    }
-    input {
-      width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid #2a2a3a;
-      background: #0b0b12; color: var(--text);
-      outline: none;
-    }
-    .grid {
-      padding: 24px 16px;
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 14px;
-    }
-    .card {
-      background: linear-gradient(180deg, #171722, #141420);
-      border: 1px solid #23233a; border-radius: 14px;
-      padding: 14px; display: flex; flex-direction: column; gap: 8px;
-      transition: transform .12s ease, border-color .12s ease;
-    }
-    .card:hover { transform: translateY(-2px); border-color: #2f2f55; }
-    .name { font-weight: 600; }
-    .price { color: var(--accent); font-weight: 700; }
-    .tag { font-size: 12px; color: var(--muted); }
-    footer {
-      padding: 24px 16px; color: var(--muted); text-align: center; border-top: 1px solid #222;
-    }
+    :root { --bg:#0f0f14; --card:#171722; --text:#eaeaf0; --muted:#9aa0a6; --accent:#7c9cff; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,Segoe UI,Roboto,Arial;background:linear-gradient(120deg,#0f0f14,#111827);color:var(--text)}
+    header{position:sticky;top:0;z-index:5;padding:18px 14px;background:rgba(10,10,20,.8);backdrop-filter:blur(8px);border-bottom:1px solid #222}
+    .wrap{max-width:1200px;margin:0 auto}
+    h1{margin:0 0 6px 0}
+    .sub{color:var(--muted);font-size:13px}
+    .controls{display:grid;grid-template-columns:1fr auto auto;gap:8px;margin-top:10px}
+    input,select{padding:10px 12px;border-radius:10px;border:1px solid #2a2a3a;background:#0b0b12;color:var(--text)}
+    .grid{padding:18px 14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+    .card{background:linear-gradient(180deg,#171722,#141420);border:1px solid #23233a;border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:6px}
+    .name{font-weight:700}
+    .price{color:#ffcc66;font-weight:800}
+    .tag{font-size:12px;color:var(--muted)}
+    footer{border-top:1px solid #222;padding:20px 14px;text-align:center}
+    .dc a{display:inline-block;background:#5865F2;color:white;padding:12px 18px;border-radius:12px;text-decoration:none;font-weight:800}
+    .dc a:hover{filter:brightness(1.1)}
+    .count{align-self:center;color:var(--muted);font-size:13px}
   </style>
 </head>
 <body>
-  <header>
-    <div class="wrap">
-      <h1>SunSlein Store</h1>
-      <div class="sub">Alle Cosmetics (nur die aus deiner Liste) • Suche nach Namen</div>
-      <div class="controls">
-        <input id="search" placeholder="Suchen… z.B. Wings, Hat, Dragon, Baby" />
-        <div class="sub" id="count"></div>
-      </div>
+<header>
+  <div class="wrap">
+    <h1>Sunalein Store</h1>
+    <div class="sub">Cosmetics Shop</div>
+    <div class="controls">
+      <input id="search" placeholder="Suchen… z.B. Wings, Hat, Dragon" />
+      <select id="category">
+        <option value="all">Alle Kategorien</option>
+        <option value="wings">Wings</option>
+        <option value="pets">Pets</option>
+        <option value="hats">Hats</option>
+        <option value="accessories">Accessories</option>
+        <option value="effects">Effects/Aura</option>
+      </select>
+      <select id="sort">
+        <option value="none">Sortierung</option>
+        <option value="asc">Preis ↑</option>
+        <option value="desc">Preis ↓</option>
+      </select>
     </div>
-  </header>
+    <div class="count" id="count"></div>
+  </div>
+</header>
 
-  <main class="wrap">
-    <section class="grid" id="grid"></section>
-  </main>
+<main class="wrap">
+  <section class="grid" id="grid"></section>
+</main>
 
-  <footer>
-    © SunSlein Store • Preise wie angegeben
-  </footer>
+<footer>
+  <div class="dc">
+    👉 <a href="https://discord.gg/V9pPWjVSF8" target="_blank">Join Discord</a>
+  </div>
+  <div class="sub" style="margin-top:8px;">© Sunalein Store</div>
+</footer>
 
-  <script>
-    const items = [
-      ["Mushroom Hat","2,90 €"],["Leaf Wings","4,30 €"],["Wooden Dragon","6,00 €"],["Squirrel Pet","3,30 €"],
-      ["Spooky Wings","6,10 €"],["Magic Belt","4,50 €"],["Halloween Sword","Preis auf Anfrage"],
-      ["Long Hairstyles","2,50 €"],["Fairy Wings","4,70 €"],["Earmuffs","2,90 €"],["Baby Rudolph","3,80 €"],
-      ["Christmas Overlay","2,30 €"],["Polar Bear Plushie","3,40 €"],["Wreath Halo","2,30 €"],
-      ["Baby Penguin","4,50 €"],["Snowflake Overlay","4,00 €"],["Firework Overlay","1,60 €"],
-      ["Lunar Ornament","4,70 €"],["Koi Underglow","7,50 €"],["Conical Hat","2,90 €"],
-      ["Bamboo Cane","4,30 €"],["Dragon Aura","9,50 €"],["Balloon Dragon","5,70 €"],
-      ["Teddy Backpack","3,50 €"],["Dove Pet","4,50 €"],["Wiggly Hearts","3,50 €"],
-      ["Floaty Hearts","4,30 €"],["Propeller Hat","2,90 €"],["Lady Bugpack","2,50 €"],
-      ["Flower Wings","3,90 €"],["Butterfly Pet","3,80 €"],["Butterfly Overlay","2,10 €"],
-      ["Parrot Wings","4,90 €"],["Captains Beard","1,90 €"],["Monkey","3,40 €"],
-      ["Earrings","2,50 €"],["Hard Hat","2,30 €"],["Tool Belt","2,90 €"],
-      ["Coconut Bra","1,70 €"],["Palm Skirt","2,10 €"],["Baby Shark","3,90 €"],
-      ["Turtle Plushie","3,90 €"],["Pufferfish Balloon","4,10 €"],["Axolotl Aura","7,50 €"],
-      ["Melee Weapons","2,50 €"],["Dragon Hatchling","5,10 €"],["Samurai Shoulderpads","2,50 €"],
-      ["Samurai Skirt","2,50 €"],["Bag of Holding","2,90 €"],["Enchanted Effect","7,90 €"],
-      ["GamingguidesDE Slime","4,10 €"],["NoRisks Monster","2,50 €"],["Succubus Wings","13,70 €"],
-      ["Lantern","3,10 €"],["Tail","2,10 €"],["Hat","2,20 €"],["Tool","2,70 €"],["Halo","3,70 €"],
-      ["Rabbit","3,10 €"],["Crystal Wings","7,30 €"],["Steampunk Wings","2,30 €"],
-      ["Cap","2,30 €"],["Cat Ears","4,10 €"],["Bandana","5,50 €"],["Headset","2,20 €"],
-      ["Angel Wings","5,50 €"],["Dog Ears","2,50 €"],["Shoes","3,10 €"],["Royal Crown","Preis auf Anfrage"],
-      ["Reved Firehand","6,50 €"],["Butterfly Wings","4,70 €"],["Moose Hat","2,10 €"],
-      ["Mustache","2,70 €"],["Baby Dragon","4,50 €"],["Parrot","344,50 €"],["MiniMe","9,50 €"],
-      ["Bee","2,70 €"],["Unicorn Horn","3,70 €"],["Baby Panda","3,90 €"],["Slime","3,90 €"],
-      ["Blocky","4,90 €"],["Elitecloak RyanxCole","Preis auf Anfrage"],["Swimming Ring","3,70 €"],
-      ["Katanas","6,50 €"],["Crab","4,70 €"],["Hair Bow","6,50 €"],["Necktie","2,90 €"],
-      ["Item Halo","3,50 €"],["Instruments","3,30 €"],["Snail","4,50 €"],["Robot Arms","2,30 €"],
-      ["Tiara","2,50 €"],["Umbrella","6,50 €"],["Barette","9,50 €"],["Wiggly Eyes","3,30 €"],
-      ["Wizard Hat","2,10 €"],["Bat Wings","4,10 €"],["Wind Up Key","6,50 €"],["Bats","8,50 €"],
-      ["Ice Spikes","4,30 €"],["Winter Boots","2,50 €"],["Snowman","3,30 €"],["Ice Tiara","3,00 €"],
-      ["Santa Belt","2,70 €"],["Beanie","3,30 €"],["Ice Hand","8,50 €"],["Boxing Gloves","5,00 €"],
-      ["Allay","3,30 €"],["Monocle","2,70 €"],["Cupids Quiver","6,90 €"],["Teddy","4,00 €"]
-    ];
+<script>
+const items = [
+  {n:"Mushroom Hat",p:2.90,c:"hats"}, {n:"Leaf Wings",p:4.30,c:"wings"}, {n:"Wooden Dragon",p:6.00,c:"pets"},
+  {n:"Squirrel Pet",p:3.30,c:"pets"}, {n:"Spooky Wings",p:6.10,c:"wings"}, {n:"Magic Belt",p:4.50,c:"accessories"},
+  {n:"Halloween Sword",p:null,c:"accessories"}, {n:"Fairy Wings",p:4.70,c:"wings"}, {n:"Baby Rudolph",p:3.80,c:"pets"},
+  {n:"Polar Bear Plushie",p:3.40,c:"pets"}, {n:"Dragon Aura",p:9.50,c:"effects"}, {n:"Balloon Dragon",p:5.70,c:"pets"},
+  {n:"Succubus Wings",p:13.70,c:"wings"}, {n:"Axolotl Aura",p:7.50,c:"effects"}, {n:"Butterfly Wings",p:4.70,c:"wings"},
+  {n:"Baby Dragon",p:4.50,c:"pets"}, {n:"MiniMe",p:9.50,c:"pets"}, {n:"Crystal Wings",p:7.30,c:"wings"},
+  {n:"Angel Wings",p:5.50,c:"wings"}, {n:"Bat Wings",p:4.10,c:"wings"}, {n:"Wizard Hat",p:2.10,c:"hats"},
+  {n:"Royal Crown",p:null,c:"hats"}, {n:"Parrot",p:344.50,c:"pets"}
+];
 
-    const grid = document.getElementById('grid');
-    const search = document.getElementById('search');
-    const count = document.getElementById('count');
+const grid = document.getElementById('grid');
+const search = document.getElementById('search');
+const category = document.getElementById('category');
+const sort = document.getElementById('sort');
+const count = document.getElementById('count');
 
-    function render(list) {
-      grid.innerHTML = '';
-      list.forEach(([name, price]) => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-          <div class="name">${name}</div>
-          <div class="price">${price}</div>
-          <div class="tag">Cosmetic</div>
-        `;
-        grid.appendChild(card);
-      });
-      count.textContent = `${list.length} Items`;
-    }
+function render(){
+  let list = items.filter(i =>
+    (category.value === 'all' || i.c === category.value) &&
+    i.n.toLowerCase().includes(search.value.toLowerCase())
+  );
 
-    render(items);
-
-    search.addEventListener('input', () => {
-      const q = search.value.toLowerCase().trim();
-      const filtered = items.filter(([n]) => n.toLowerCase().includes(q));
-      render(filtered);
+  if(sort.value !== 'none'){
+    list = list.slice().sort((a,b)=>{
+      if(a.p==null) return 1;
+      if(b.p==null) return -1;
+      return sort.value === 'asc' ? a.p-b.p : b.p-a.p;
     });
-  </script>
+  }
+
+  grid.innerHTML = '';
+  list.forEach(i=>{
+    const card = document.createElement('div');
+    card.className='card';
+    card.innerHTML = `
+      <div class="name">${i.n}</div>
+      <div class="price">${i.p==null ? 'Preis auf Anfrage' : i.p.toFixed(2).replace('.',',')+' €'}</div>
+      <div class="tag">${i.c}</div>
+    `;
+    grid.appendChild(card);
+  });
+  count.textContent = list.length + ' Items';
+}
+render();
+
+[search,category,sort].forEach(el=>el.addEventListener('input',render));
+</script>
 </body>
 </html>
