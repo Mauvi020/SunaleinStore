@@ -14,12 +14,16 @@ header h2{margin:0}
 .buttons button{margin:2px;padding:6px 12px;border:none;border-radius:8px;background:#7c9cff;color:#fff;cursor:pointer}
 .buttons button.active{background:#ffcc66;color:#000}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;padding:12px}
-.card{background:#171722;border:1px solid #23233a;border-radius:12px;padding:10px}
-.card img{width:100%;height:140px;object-fit:cover;border-radius:8px;background:#0b0b12}
-.card .price{color:#ffcc66;font-weight:800}
+.card{background:#171722;border:1px solid #23233a;border-radius:12px;padding:10px;display:flex;flex-direction:column;align-items:center;transition:transform 0.2s}
+.card:hover{transform:translateY(-5px)}
+.card img{width:100%;height:140px;object-fit:cover;border-radius:8px;background:#0b0b12;margin-bottom:8px}
+.card .price{color:#ffcc66;font-weight:800;margin-bottom:4px}
 .card .tag{color:#9aa0a6;font-size:12px}
-footer{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #222;padding:12px}
-footer a{color:#7c9cff;text-decoration:none;font-weight:700;padding:6px 12px;border-radius:8px;background:#171722}
+footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;border-top:1px solid #222;padding:12px}
+footer a{color:#fff;text-decoration:none;font-weight:700;padding:6px 12px;border-radius:8px;background:#7c9cff}
+footer a:hover{background:#ffcc66;color:#000}
+button{padding:6px 12px;border:none;border-radius:8px;background:#7c9cff;color:#fff;cursor:pointer}
+button:hover{background:#ffcc66;color:#000}
 </style>
 </head>
 <body>
@@ -42,8 +46,11 @@ footer a{color:#7c9cff;text-decoration:none;font-weight:700;padding:6px 12px;bor
 </main>
 
 <footer class="wrap">
-<div>Sunalein Store</div>
+<div style="font-size:14px;">&copy; 2026 Sunalein Store | Alle Rechte vorbehalten</div>
+<div style="display:flex;gap:10px;margin-top:5px;">
 <a href="admin.html" target="_blank">Admin Panel</a>
+<a href="https://discord.gg/V9pPWjVSF8" target="_blank">Discord</a>
+</div>
 </footer>
 
 <script type="module">
@@ -73,10 +80,9 @@ const grid = document.getElementById('grid');
 const search = document.getElementById('search');
 const buttons = document.querySelectorAll('.buttons button');
 
-// Realtime Database laden
+// Firebase live Daten abrufen
 onValue(itemsRef, snapshot => {
   const data = snapshot.val() || {};
-  // Firebase speichert als Objekt, wir wandeln in Array
   items = Object.values(data).map(i=>({
     name: i.name || "Unbekannt",
     price: i.price != null ? i.price : null,
@@ -86,7 +92,7 @@ onValue(itemsRef, snapshot => {
   render();
 });
 
-// Kategorie-Buttons
+// Kategorie Buttons
 buttons.forEach(b=>{
   b.onclick=()=>{
     buttons.forEach(btn=>btn.classList.remove('active'));
@@ -99,7 +105,7 @@ buttons.forEach(b=>{
 // Suche
 search.addEventListener('input',render);
 
-// Render Funktion
+// Render-Funktion
 function render(){
   grid.innerHTML='';
   if(!items || items.length===0) return;
